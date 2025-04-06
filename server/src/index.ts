@@ -27,7 +27,7 @@ app.use('/api', router);
 /**
  * Auth Endpoints
  */
-app.post('/user', createUser);
+app.post('/signup', createUser);
 app.post('/signin', loginUser);
 
 /**

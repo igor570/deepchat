@@ -1,15 +1,20 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 
 const router = Router();
 
 /**
  * Messages routes
  */
+router.post('/get-messages', (req: Request, res: Response) => {
+  res.status(200).json({ message: 'Get messages stub' });
+});
 
-router.post('/get-messages', () => {});
+router.post('/send-message', (req: Request, res: Response) => {
+  res.status(200).json({ message: 'Send message stub' });
+});
 
-router.post('/send-message', () => {});
-
-router.get('/get-ai-reply', () => {});
+router.get('/get-ai-reply', (req: Request, res: Response) => {
+  res.status(200).json({ message: 'Get AI reply stub' });
+});
 
 export default router;
