@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import router from './routes/router';
+
+import { createUser, loginUser } from './handlers/user';
 
 dotenv.config();
 
@@ -15,6 +18,19 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
 
+/**
+ * Router
+ */
+app.use('/api', router);
+
+/**
+ * Auth Endpoints
+ */
+app.post('/user', createUser);
+app.post('/signin', loginUser);
+
+/**
+ * Launch Server
+ */
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
