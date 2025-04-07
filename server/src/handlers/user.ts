@@ -21,7 +21,7 @@ export const createUser = async (req: Request, res: Response) => {
     console.log(hashedPassword)
     const user = await db.query(
       `INSERT INTO users (username, password) VALUES ($1, $2)`,
-      [username, hashedPassword]
+      [username, hashedPassword],
     )
     res.status(200).json({ message: 'Created user' })
   } catch (error) {
@@ -40,7 +40,7 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
     const foundUser = await db.query(
       `SELECT * FROM users WHERE username = $1`,
-      [username]
+      [username],
     )
     const user: User = foundUser.rows[0]
 
