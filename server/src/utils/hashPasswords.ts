@@ -8,5 +8,5 @@ export const comparePasswords = (
 }
 
 export const hashPassword = (plainPassword: string) => {
-  return bcrypt.hash(plainPassword, 5)
+  return bcrypt.hash(plainPassword, process.env.SALT ?? 5)
 }
