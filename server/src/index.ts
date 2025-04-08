@@ -7,6 +7,8 @@ import { createServer } from 'node:http'
 import { Server } from 'socket.io'
 
 import { createUser, loginUser } from './handlers/user'
+import OpenAI from 'openai'
+import { generatePrompt } from './utils/generatePrompt'
 
 dotenv.config()
 
@@ -14,6 +16,9 @@ const PORT = process.env.PORT || 5000
 const app = express()
 const server = createServer(app)
 export const io = new Server(server)
+export const ai = new OpenAI({
+  apiKey: process.env.OPEN_AI_KEY,
+})
 
 /**
  * Middleware
@@ -47,6 +52,15 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('User has left')
+  })
+
+  socket.on('chat message', (msg) => {
+    try {
+      const openAIResponse = generatePrompt(msg)
+      socket.emit('reply', openAIResponse)
+    } catch (error) {
+      socket.emit('error', { message: 'Failed to generate an AI response' })
+    }
   })
 })
 
