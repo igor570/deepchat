@@ -26,22 +26,6 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-/* TODO
-/*
-Next step: We need to design the DB so we know how this is gonna work
-- A user or AI can create a Message
-
-After this:
-  [Websocket opens]
-  - It should open a web socket connection
-
-  [sendMessage function]
-  - The user can send a message via the web socket
-  - This message should be passed into the AIPrompt function
-  - This should return an ai AIPrompt
-  - This should be sent back via the websocket
-*/
-
 /**
  * Socket
  */
