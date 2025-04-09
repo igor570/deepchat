@@ -5,11 +5,8 @@ export const generatePrompt = async (userMessage: string) => {
     model: 'gemini-2.0-flash',
     contents: userMessage,
   })
-  const message = reply.text
 
-  if (!message) return 'No response received from AI Agent'
+  if (!reply.text) return 'No response received from AI Agent'
 
-  console.log(message)
-
-  return message
+  return reply.text
 }
