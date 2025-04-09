@@ -18,11 +18,10 @@ export const createUser = async (req: Request, res: Response) => {
 
   try {
     const hashedPassword = await hashPassword(password)
-    console.log(hashedPassword)
-    const user = await db.query(
-      `INSERT INTO users (username, password) VALUES ($1, $2)`,
-      [username, hashedPassword],
-    )
+    await db.query(`INSERT INTO users (username, password) VALUES ($1, $2)`, [
+      username,
+      hashedPassword,
+    ])
     res.status(200).json({ message: 'Created user' })
   } catch (error) {
     res.status(500).json({ message: 'Error creating user', error })
