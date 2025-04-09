@@ -7,8 +7,8 @@ import { createServer } from 'node:http'
 import { Server } from 'socket.io'
 
 import { createUser, loginUser } from './handlers/user'
-import OpenAI from 'openai'
 import { generatePrompt } from './utils/generatePrompt'
+import { GoogleGenAI } from '@google/genai'
 
 dotenv.config()
 
@@ -16,9 +16,7 @@ const PORT = process.env.PORT || 5000
 const app = express()
 const server = createServer(app)
 export const io = new Server(server)
-export const ai = new OpenAI({
-  apiKey: process.env.OPEN_AI_KEY,
-})
+export const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_KEY })
 
 /**
  * Middleware
@@ -54,10 +52,10 @@ io.on('connection', (socket) => {
     console.log('User has left')
   })
 
-  socket.on('chat message', (msg) => {
+  socket.on('chat-message', async (msg) => {
     try {
-      const openAIResponse = generatePrompt(msg)
-      socket.emit('reply', openAIResponse)
+      const geminiResponse = await generatePrompt(msg)
+      socket.emit('reply', geminiResponse)
     } catch (error) {
       socket.emit('error', { message: 'Failed to generate an AI response' })
     }
