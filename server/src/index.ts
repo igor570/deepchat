@@ -38,7 +38,13 @@ io.on('connection', (socket) => {
 
   socket.on('chat-message', async (msg) => {
     try {
+
+      // TODO: Insert user message to DB
+
       const geminiResponse = await generatePrompt(msg)
+      
+      // TODO: Insert AI response to DB
+
       socket.emit('reply', geminiResponse)
     } catch (error) {
       socket.emit('error', { message: 'Failed to generate an AI response' })
