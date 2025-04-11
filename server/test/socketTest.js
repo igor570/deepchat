@@ -2,7 +2,7 @@ import { io } from 'socket.io-client'
 
 const socket = io('http://localhost:8000', {
     auth: {
-        token: 'your_jwt_token_here',
+        token: 'jwt',
     },
 })
 

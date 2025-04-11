@@ -11,6 +11,7 @@ import { createUser, loginUser } from './handlers/user'
 import { generatePrompt } from './utils/generatePrompt'
 import { GoogleGenAI } from '@google/genai'
 import { addMessage } from './dataAccessors/addMessage'
+import { aiUUID } from './utils/consts'
 
 dotenv.config()
 
@@ -78,15 +79,16 @@ io.on('connection', (socket) => {
 
             //Send AI Message to DB
             await addMessage({
-                userId: 'ai_agent',
-                content: msg,
+                userId: aiUUID,
+                content: geminiResponse,
                 senderType: 'ai',
             })
 
             socket.emit('reply', geminiResponse)
-        } catch (error) {
+        } catch (error: any) {
             socket.emit('error', {
                 message: 'Failed to generate an AI response',
+                error: error.message,
             })
         }
     })
