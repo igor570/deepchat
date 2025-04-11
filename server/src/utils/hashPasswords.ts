@@ -1,8 +1,10 @@
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { Message } from '../types/message'
 
 export const comparePasswords = (
   plainPassword: string,
-  hashedPassword: string,
+  hashedPassword: string
 ) => {
   return bcrypt.compare(plainPassword, hashedPassword)
 }

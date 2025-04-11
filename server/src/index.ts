@@ -5,10 +5,12 @@ import morgan from 'morgan'
 import router from './routes/router'
 import { createServer } from 'node:http'
 import { Server } from 'socket.io'
+import jwt from 'jsonwebtoken'
 
 import { createUser, loginUser } from './handlers/user'
 import { generatePrompt } from './utils/generatePrompt'
 import { GoogleGenAI } from '@google/genai'
+import { addMessage } from './dataAccessors/addMessage'
 
 dotenv.config()
 
@@ -27,7 +29,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 /**
- * Socket
+ * Main Socket
  */
 io.on('connection', (socket) => {
   console.log('a user connected')
@@ -38,12 +40,20 @@ io.on('connection', (socket) => {
 
   socket.on('chat-message', async (msg) => {
     try {
-
-      // TODO: Insert user message to DB
+      //Do i need to receive the userId via the socket?
+      await addMessage({
+        userId: 'da53e1c6-972e-4f61-9fc0-7c6008daed17',
+        content: msg,
+        senderType: 'user',
+      })
 
       const geminiResponse = await generatePrompt(msg)
-      
-      // TODO: Insert AI response to DB
+
+      await addMessage({
+        userId: 'da53e1c6-972e-4f61-9fc0-7c6008daed17',
+        content: msg,
+        senderType: 'ai',
+      })
 
       socket.emit('reply', geminiResponse)
     } catch (error) {

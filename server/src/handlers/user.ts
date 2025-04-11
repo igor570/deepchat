@@ -1,5 +1,6 @@
 import { comparePasswords, hashPassword } from './../utils/hashPasswords'
 import { Request, Response } from 'express'
+import jwt from 'jsonwebtoken'
 import db from '../db'
 
 interface User {
@@ -23,6 +24,8 @@ export const createUser = async (req: Request, res: Response) => {
       hashedPassword,
     ])
     res.status(200).json({ message: 'Created user' })
+
+    //error
   } catch (error) {
     res.status(500).json({ message: 'Error creating user', error })
   }
@@ -39,7 +42,7 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
     const foundUser = await db.query(
       `SELECT * FROM users WHERE username = $1`,
-      [username],
+      [username]
     )
     const user: User = foundUser.rows[0]
 
@@ -55,7 +58,11 @@ export const loginUser = async (req: Request, res: Response) => {
       return
     }
 
-    res.status(200).json({ message: 'Logged in' })
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!)
+
+    res.status(200).json({ message: 'Logged in', token })
+
+    //error
   } catch (error) {
     res.status(500).json({ message: 'Error during login', error })
   }
