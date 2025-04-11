@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
 
             //Send AI Message to DB
             await addMessage({
-                userId,
+                userId: 'ai_agent',
                 content: msg,
                 senderType: 'ai',
             })
