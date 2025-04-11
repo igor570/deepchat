@@ -67,6 +67,7 @@ io.on('connection', (socket) => {
 
     socket.on('chat-message', async (msg) => {
         try {
+            //Send user message to DB
             await addMessage({
                 userId,
                 content: msg,
@@ -75,6 +76,7 @@ io.on('connection', (socket) => {
 
             const geminiResponse = await generatePrompt(msg)
 
+            //Send AI Message to DB
             await addMessage({
                 userId,
                 content: msg,
