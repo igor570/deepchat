@@ -12,17 +12,24 @@ interface User {
 export const createUser = async (req: Request, res: Response) => {
   const { username, password } = req.body
 
+  console.log(username, password)
+
   if (!username || !password) {
     res.status(400).json({ message: 'No username or password received' })
     return
   }
 
   try {
+    console.log('Pre hashing...')
     const hashedPassword = await hashPassword(password)
-    await db.query(`INSERT INTO users (username, password) VALUES ($1, $2)`, [
-      username,
-      hashedPassword,
-    ])
+    console.log(hashPassword)
+    const query = await db.query(
+      `INSERT INTO users (username, password) VALUES ($1, $2)`,
+      [username, hashedPassword]
+    )
+
+    console.log(query)
+
     res.status(200).json({ message: 'Created user' })
 
     //error

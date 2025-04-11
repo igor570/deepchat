@@ -3,9 +3,9 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import router from './routes/router'
+import jwt from 'jsonwebtoken'
 import { createServer } from 'node:http'
 import { Server } from 'socket.io'
-import jwt from 'jsonwebtoken'
 
 import { createUser, loginUser } from './handlers/user'
 import { generatePrompt } from './utils/generatePrompt'
@@ -34,15 +34,41 @@ app.use(express.urlencoded({ extended: false }))
 io.on('connection', (socket) => {
   console.log('a user connected')
 
+  const token = socket.handshake.auth.token
+
+  let userId: string
+
+  //Verify the token sent by user on connection
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET ?? '')
+
+    if (typeof payload !== 'string' && 'userId' in payload) {
+      userId = payload.userId
+    } else {
+      throw new Error('Invalid token payload')
+    }
+
+    console.log(`User connected: ${userId}`)
+  } catch (err) {
+    console.log('Authentication failed:', err)
+    socket.emit('error', { message: 'Authentication error' })
+    socket.disconnect()
+    return
+  }
+
+  //Disconnect the user if they close connection
+
   socket.on('disconnect', () => {
     console.log('User has left')
   })
 
+  //Allow the user to send chat messages to AI
+
   socket.on('chat-message', async (msg) => {
     try {
-      //Do i need to receive the userId via the socket?
       await addMessage({
-        userId: 'da53e1c6-972e-4f61-9fc0-7c6008daed17',
+        userId,
         content: msg,
         senderType: 'user',
       })
@@ -50,7 +76,7 @@ io.on('connection', (socket) => {
       const geminiResponse = await generatePrompt(msg)
 
       await addMessage({
-        userId: 'da53e1c6-972e-4f61-9fc0-7c6008daed17',
+        userId,
         content: msg,
         senderType: 'ai',
       })
