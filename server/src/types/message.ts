@@ -1,5 +1,5 @@
 export interface Message {
-  userId: string
-  content: string
-  senderType: 'user' | 'ai'
+    userId: string
+    content: string
+    senderType: 'user' | 'ai'
 }
