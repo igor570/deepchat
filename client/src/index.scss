@@ -130,9 +130,12 @@ input {
 body {
     height: 100dvh;
     width: 100dvw;
-    max-width: 100%;
-
     & * {
         font-family: 'Inter', sans-serif;
     }
+}
+
+#root {
+    height: 100%;
+    width: 100%;
 }
