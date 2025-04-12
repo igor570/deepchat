@@ -1,4 +1,4 @@
-import { PortalForm } from '../../components/PortalForm/PortalForm'
+import { PortalForm } from '../../components'
 
 import './Portal.scss'
 
