@@ -20,6 +20,7 @@ export const io = new Server(server)
 export const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_KEY })
 
 /**** Middleware ****/
+
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: false }))
 io.use((socket, next) => authenticateSocket(socket as CustomSocket, next))
 
 /**** Main Socket ****/
+
 io.on('connection', async (socket) => {
     console.log('a user connected')
 
@@ -41,11 +43,14 @@ io.on('connection', async (socket) => {
 })
 
 /**** Router ****/
+
 app.use('/api', router)
 
 /**** Auth Endpoints ****/
+
 app.post('/signup', createUser)
 app.post('/signin', loginUser)
 
 /**** Server Launch ****/
+
 server.listen(PORT, () => console.log(`Server running on ${PORT}`))
