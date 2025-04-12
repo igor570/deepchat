@@ -1,0 +1,129 @@
+@use '../../index' as *;
+
+//Form
+.form {
+    max-width: 500px;
+    outline: 1px solid $outline-primary;
+    padding: 25px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-container {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input {
+    min-width: 400px;
+    padding: 10px 8px;
+    outline: 1px solid $outline-primary;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+}
+
+.sign-in-button {
+    border: none;
+    padding: 10px 8px;
+    background-color: $primary-background;
+    border-radius: 4px;
+    color: $primary-color;
+    margin-top: 30px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $primary-hover;
+    }
+}
+
+.continue-text {
+    color: $primary-text-color;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.login-text {
+    font-size: 24px;
+    margin-bottom: 16px;
+    font-weight: bold;
+}
+
+.enter-text {
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: primary-text-color;
+}
+
+.error-text {
+    margin-top: -10px;
+    font-size: 12px;
+    color: $primary-error;
+}
+
+//Sign up / Login Toggle
+
+.mode-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    width: 400px;
+    height: 45px;
+    background-color: $secondary-background;
+    margin-bottom: 25px;
+    border-radius: 4px;
+}
+
+.mode-toggle-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 35px;
+    border-radius: 4px;
+    user-select: none;
+    font-weight: 500;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.toggle-selected {
+    background-color: $primary-background-alt;
+}
+
+//Social Login
+
+.social-login-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.social-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 8px;
+    outline: 1px solid $outline-primary;
+    border: none;
+    width: 180px;
+    border-radius: 4px;
+    background-color: transparent;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $secondary-background;
+    }
+}
