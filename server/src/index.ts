@@ -19,23 +19,17 @@ const server = createServer(app)
 export const io = new Server(server)
 export const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_KEY })
 
-/**
- * Middleware
- */
+/**** Middleware ****/
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-/**
- * Authenticate Socket - Global middleware for all socket listeners
- */
+/**** Authenticate Socket - Global middleware for all socket listeners ****/
 
 io.use((socket, next) => authenticateSocket(socket as CustomSocket, next))
 
-/**
- * Main Socket
- */
+/**** Main Socket ****/
 io.on('connection', async (socket) => {
     console.log('a user connected')
 
@@ -46,18 +40,12 @@ io.on('connection', async (socket) => {
     socket.on('chat-message', handleChatMessage(socket as CustomSocket))
 })
 
-/**
- * Router
- */
+/**** Router ****/
 app.use('/api', router)
 
-/**
- * Auth Endpoints
- */
+/**** Auth Endpoints ****/
 app.post('/signup', createUser)
 app.post('/signin', loginUser)
 
-/**
- * Launch Server
- */
+/**** Server Launch ****/
 server.listen(PORT, () => console.log(`Server running on ${PORT}`))
