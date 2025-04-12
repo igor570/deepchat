@@ -27,13 +27,13 @@ export const PortalForm = () => {
 
     const [mode, setMode] = useState<Mode>('login')
 
-    // const signup = useSignUp()
-    // const signin = useSignIn()
+    const signup = useSignUp()
+    const signin = useSignIn()
 
     const onSubmit = (data: FormFields) => {
         console.log('Form Submitted:', data)
-        // if (mode === 'login') signin.mutate(data)
-        // else signup.mutate({ ...omit(data, 'confirmPassword') })
+        if (mode === 'login') signin.mutate(data)
+        else signup.mutate({ ...omit(data, 'confirmPassword') })
         reset()
     }
 
