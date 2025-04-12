@@ -11,7 +11,6 @@ import {
     FormHeader,
     FormInput,
     FormSubmitButton,
-    FormFooter,
 } from './FormComponents'
 
 import './PortalForm.scss'
@@ -88,8 +87,6 @@ export const PortalForm = () => {
                         />
                     )}
                     <FormSubmitButton mode={mode} isSubmitting={isSubmitting} />
-                    <div className="continue-text">OR CONTINUE WITH</div>
-                    <FormFooter />
                 </div>
             </form>
         </div>

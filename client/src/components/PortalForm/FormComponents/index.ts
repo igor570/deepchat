@@ -1,4 +1,3 @@
-export * from './FormFooter'
 export * from './FormHeader'
 export * from './FormModeToggle'
 export * from './FormSubmitButton'

@@ -1,3 +1,9 @@
+import { PortalForm } from '../components/PortalForm/PortalForm'
+
 export const Portal = () => {
-    return <div>Portal</div>
+    return (
+        <div>
+            <PortalForm />
+        </div>
+    )
 }
