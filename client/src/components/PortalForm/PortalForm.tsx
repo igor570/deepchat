@@ -16,8 +16,6 @@ import {
 
 import './PortalForm.scss'
 
-import './PortalForm.scss'
-
 export const PortalForm = () => {
     const {
         register,
