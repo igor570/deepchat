@@ -5,6 +5,7 @@ import { FormFields, schema } from '../../lib/schema/formFields.ts'
 import { Mode } from '../../lib/types/mode.ts'
 import { useSignIn, useSignUp } from '../../lib/hooks/auth.ts'
 import { omit } from 'lodash-es'
+import { useNavigate } from 'react-router-dom'
 
 import {
     FormModeToggle,
@@ -24,6 +25,7 @@ export const PortalForm = () => {
         reset,
         formState: { errors, isSubmitting },
     } = useForm<FormFields>({ resolver: zodResolver(schema) })
+    const navigate = useNavigate()
 
     const [mode, setMode] = useState<Mode>('login')
 
@@ -31,9 +33,17 @@ export const PortalForm = () => {
     const signin = useSignIn()
 
     const onSubmit = (data: FormFields) => {
-        console.log('Form Submitted:', data)
-        if (mode === 'login') signin.mutate(data)
-        else signup.mutate({ ...omit(data, 'confirmPassword') })
+        //Handle login
+        if (mode === 'login') {
+            signin.mutate(omit(data, 'confirmPassword'), {
+                onSuccess: () => {
+                    navigate('/chat')
+                },
+            })
+        } else {
+            //Handle sign up
+            signup.mutate({ ...omit(data, 'confirmPassword') })
+        }
         reset()
     }
 
@@ -46,25 +56,14 @@ export const PortalForm = () => {
             <form className="form" onSubmit={handleSubmit(onSubmit)}>
                 <FormHeader mode={mode} />
                 <div className="input-container">
-                    {mode === 'signup' && (
-                        <FormInput
-                            register={register}
-                            errors={errors}
-                            registerName="name"
-                            label="Name"
-                            id="name"
-                            type="text"
-                            placeholder="Enter your name"
-                        />
-                    )}
                     <FormInput
                         register={register}
                         errors={errors}
-                        registerName="email"
-                        label="Email"
-                        id="email"
+                        registerName="username"
+                        label="Username"
+                        id="username"
                         type="text"
-                        placeholder="m@example.com"
+                        placeholder="jimbob123"
                     />
                     <FormInput
                         register={register}

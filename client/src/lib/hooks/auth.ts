@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 const baseurl = 'http://localhost:8000'
 
 interface Payload {
-    email: string
+    username: string
     password: string
 }
 
@@ -43,13 +43,13 @@ export const useSignIn = () => {
 
 /**** API Requests ****/
 
-const signUp = async ({ email, password }: Payload): Promise<void> => {
+const signUp = async ({ username, password }: Payload): Promise<void> => {
     const response = await fetch(`${baseurl}/signup`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
     })
 
     // Check for response errors
@@ -59,13 +59,16 @@ const signUp = async ({ email, password }: Payload): Promise<void> => {
     }
 }
 
-const signIn = async ({ email, password }: Payload): Promise<LoginPromise> => {
+const signIn = async ({
+    username,
+    password,
+}: Payload): Promise<LoginPromise> => {
     const response = await fetch(`${baseurl}/signin`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
     })
 
     // Check for response errors

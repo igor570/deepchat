@@ -18,5 +18,5 @@ createRoot(document.getElementById('root')!).render(
                 </Routes>
             </BrowserRouter>
         </QueryClientProvider>
-    </StrictMode>,
+    </StrictMode>
 )
