@@ -1,0 +1,37 @@
+@use '../../index' as *;
+
+.chat {
+    &__page {
+        height: 100%;
+        background-color: $primary-background;
+        display: flex;
+        flex-direction: column;
+    }
+    &__header {
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        align-items: center;
+        height: 50px;
+        flex-shrink: 0;
+    }
+    &__conversation {
+        background-color: rgb(53, 53, 59);
+        flex-grow: 1; // Makes this element grow to fill available space
+        overflow-y: auto; // Adds scrolling to the conversation if its content overflows
+    }
+    &__send-message {
+        height: 50px;
+        flex-shrink: 0; // Prevents send-message from shrinking
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        gap: 30px;
+
+        &__input {
+            flex-grow: 1;
+        }
+    }
+}
