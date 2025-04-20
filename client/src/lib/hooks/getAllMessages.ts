@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { Message } from '../types/message'
 
 const baseurl = 'http://localhost:8000'
 
@@ -10,11 +9,7 @@ export const useGetMessages = (userId: string) => {
     })
 }
 
-const getAllMessages = async ({
-    userId,
-}: {
-    userId: string
-}): Promise<Message[]> => {
+const getAllMessages = async ({ userId }: { userId: string }) => {
     const response = await fetch(`${baseurl}/get-messages`, {
         method: 'GET',
         headers: {
@@ -28,5 +23,7 @@ const getAllMessages = async ({
         throw new Error(errorData.message || 'Failed to sign up')
     }
 
-    return response.json()
+    const data = await response.json()
+
+    return data
 }
