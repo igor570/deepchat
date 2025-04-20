@@ -40,11 +40,12 @@ export const handleChatMessage = (socket: CustomSocket) => {
             })
             const geminiResponse = await generatePrompt(msg)
 
-            //Add AI message to DB
+            //Add AI message to DB - we take the users id as well to identify which user the AI talked to
             await addMessage({
                 userId: aiUUID,
                 content: geminiResponse,
                 senderType: 'ai',
+                userTalkedTo: userId,
             })
             socket.emit('reply', geminiResponse)
 
