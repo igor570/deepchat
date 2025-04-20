@@ -4,10 +4,12 @@ import './Chat.scss'
 
 export const Chat = () => {
     return (
-        <div className="chat__page">
-            <ChatHeader />
-            <ChatConversation messages={chatData} />
-            <ChatSendMessage />
+        <div className="chat">
+            <div className="chat__page">
+                <ChatHeader />
+                <ChatConversation messages={chatData} />
+                <ChatSendMessage />
+            </div>
         </div>
     )
 }
