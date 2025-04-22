@@ -15,8 +15,10 @@ import {
 } from './FormComponents'
 
 import './PortalForm.scss'
+import { useAppStore } from '../../lib/store/useAppStore.ts'
 
 export const PortalForm = () => {
+    const setUserId = useAppStore((s) => s.setUserId)
     const {
         register,
         handleSubmit,
@@ -38,6 +40,8 @@ export const PortalForm = () => {
                     navigate('/chat')
                 },
             })
+            // add the userId to the store so we can get messages after navigation
+            if (signin.data) setUserId(signin.data.userId)
         } else {
             //Handle sign up
             signup.mutate({ ...omit(data, 'confirmPassword') })
