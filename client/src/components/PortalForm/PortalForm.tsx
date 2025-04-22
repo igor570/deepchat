@@ -37,11 +37,11 @@ export const PortalForm = () => {
         if (mode === 'login') {
             signin.mutate(omit(data, 'confirmPassword'), {
                 onSuccess: () => {
+                    if (signin.data) setUserId(signin.data.userId)
                     navigate('/chat')
                 },
             })
             // add the userId to the store so we can get messages after navigation
-            if (signin.data) setUserId(signin.data.userId)
         } else {
             //Handle sign up
             signup.mutate({ ...omit(data, 'confirmPassword') })
