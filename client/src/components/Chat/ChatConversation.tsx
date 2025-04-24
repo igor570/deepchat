@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { Message } from '../../lib/types/message'
+import { MappedMessage } from '../../lib/types/message'
 
 interface ChatConversationProps {
-    messages: Message[]
+    messages: MappedMessage[]
 }
 
 export const ChatConversation = ({ messages }: ChatConversationProps) => {
@@ -19,9 +19,9 @@ export const ChatConversation = ({ messages }: ChatConversationProps) => {
         <div className="chat__conversation">
             {messages.map((message) =>
                 message.senderType === 'user' ? (
-                    <div className="chat__message-user">{message.message}</div>
+                    <div className="chat__message-user">{message.content}</div>
                 ) : (
-                    <div className="chat__message-ai">{message.message}</div>
+                    <div className="chat__message-ai">{message.content}</div>
                 )
             )}
         </div>

@@ -15,31 +15,35 @@ import {
 } from './FormComponents'
 
 import './PortalForm.scss'
+import { useAppStore } from '../../lib/store/useAppStore.ts'
 
 export const PortalForm = () => {
+    const setUserId = useAppStore((s) => s.setUserId)
+    const signup = useSignUp()
+    const signin = useSignIn()
+    const navigate = useNavigate()
+    const [mode, setMode] = useState<Mode>('login')
+
+    //Form State
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors, isSubmitting },
     } = useForm<FormFields>({ resolver: zodResolver(schema) })
-    const navigate = useNavigate()
 
-    const [mode, setMode] = useState<Mode>('login')
-
-    const signup = useSignUp()
-    const signin = useSignIn()
-
+    //Submit Handler
     const onSubmit = (data: FormFields) => {
-        //Handle login
         if (mode === 'login') {
             signin.mutate(omit(data, 'confirmPassword'), {
-                onSuccess: () => {
-                    navigate('/chat')
+                onSuccess: (response) => {
+                    if (response.userId) {
+                        setUserId(response.userId)
+                        navigate('/chat')
+                    }
                 },
             })
         } else {
-            //Handle sign up
             signup.mutate({ ...omit(data, 'confirmPassword') })
         }
         reset()
