@@ -6,7 +6,7 @@ import './Chat.scss'
 export const Chat = () => {
     const userId = useAppStore((s) => s.userId)
 
-    const { data, isLoading, isError } = useGetMessages(userId || '')
+    const { data, isLoading, isError } = useGetMessages(userId)
 
     if (!userId || isLoading) {
         return <div>Loading...</div> // Show a loading indicator

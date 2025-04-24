@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getAllMessagesPromise } from '../types/message'
+import { getAllMessagesPromise, MappedMessage } from '../types/message'
 
 const baseurl = 'http://localhost:8000'
 
@@ -7,6 +7,7 @@ export const useGetMessages = (userId: string) => {
     return useQuery({
         queryKey: ['getAllMessages'],
         queryFn: () => getAllMessages({ userId }),
+        enabled: !!userId, // enables fetch if userId is defined
     })
 }
 
@@ -26,8 +27,14 @@ const getAllMessages = async ({ userId }: { userId: string }) => {
 
     const data: getAllMessagesPromise[] = await response.json()
 
-    //TODO: map the data to js naming scheme before returning
-    // eg userId: row[i].user_id
+    const mappedArr: MappedMessage[] = data.map((row) => ({
+        id: row.id,
+        userId: row.user_id,
+        content: row.content,
+        senderType: row.sender_type,
+        userTalkedTo: row.user_talked_to ?? '',
+        createdAt: row.created_at,
+    }))
 
-    return data
+    return mappedArr
 }

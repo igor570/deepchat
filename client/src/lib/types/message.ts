@@ -9,3 +9,12 @@ export interface getAllMessagesPromise extends Message {
     user_talked_to?: string
     created_at: string
 }
+
+export interface MappedMessage {
+    id: string
+    userId: string
+    content: string
+    senderType: Message['sender_type']
+    userTalkedTo: string
+    createdAt: string
+}
