@@ -21,8 +21,7 @@ const getAllMessages = async ({ userId }: { userId: string }) => {
     )
 
     if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || 'Failed to fetch messages')
+        throw new Error('Failed to fetch messages')
     }
 
     const data: getAllMessagesPromise[] = await response.json()
