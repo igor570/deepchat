@@ -10,7 +10,6 @@ export const useGetMessages = (userId: string) => {
     })
 }
 
-//TODO: Correct the promise typing when we see what we get back from DB
 const getAllMessages = async ({ userId }: { userId: string }) => {
     const response = await fetch(
         `${baseurl}/api/get-messages?userId=${userId}`,
