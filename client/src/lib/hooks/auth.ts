@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { LoginPromise } from '../types/login'
 
 // TODO: make env var for this
 const baseurl = 'http://localhost:8000'
@@ -6,12 +7,6 @@ const baseurl = 'http://localhost:8000'
 interface Payload {
     username: string
     password: string
-}
-
-interface LoginPromise {
-    message: string
-    token: string
-    userId: string
 }
 
 /**** React Query Hooks ****/
