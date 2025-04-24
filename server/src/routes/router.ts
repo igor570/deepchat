@@ -6,14 +6,17 @@ const router = Router()
 /**
  * Messages routes
  */
-router.post('/get-messages', async (req: Request, res: Response) => {
+router.get('/get-messages', async (req: Request, res: Response) => {
     try {
-        const { userId } = req.body
+        const { userId } = req.query
 
-        if (!userId)
-            res.status(400).json({ error: 'Missing userId in request body' })
+        if (!userId) {
+            res.status(400).json({
+                error: 'Missing userId in query parameters',
+            })
+        }
 
-        const response = await getAllMessages({ userId })
+        const response = await getAllMessages({ userId: userId as string })
 
         res.status(200).json(response)
     } catch (error: any) {

@@ -36,9 +36,11 @@ export const PortalForm = () => {
     const onSubmit = (data: FormFields) => {
         if (mode === 'login') {
             signin.mutate(omit(data, 'confirmPassword'), {
-                onSuccess: () => {
-                    if (signin.data) setUserId(signin.data.userId)
-                    navigate('/chat')
+                onSuccess: (response) => {
+                    if (response.userId) {
+                        setUserId(response.userId)
+                        navigate('/chat')
+                    }
                 },
             })
         } else {

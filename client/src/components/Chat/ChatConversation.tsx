@@ -18,10 +18,10 @@ export const ChatConversation = ({ messages }: ChatConversationProps) => {
     return (
         <div className="chat__conversation">
             {messages.map((message) =>
-                message.senderType === 'user' ? (
-                    <div className="chat__message-user">{message.message}</div>
+                message.sender_type === 'user' ? (
+                    <div className="chat__message-user">{message.content}</div>
                 ) : (
-                    <div className="chat__message-ai">{message.message}</div>
+                    <div className="chat__message-ai">{message.content}</div>
                 )
             )}
         </div>
