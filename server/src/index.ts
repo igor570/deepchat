@@ -16,14 +16,19 @@ dotenv.config()
 const PORT = process.env.PORT || 5000
 const app = express()
 const server = createServer(app)
-export const io = new Server(server)
+export const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:5173',
+        methods: ['GET', 'POST'],
+    },
+})
 export const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_KEY })
 
 /**** Middleware ****/
 
 app.use(
     cors({
-        origin: 'http://localhost:5173',
+        origin: '*',
     })
 )
 app.use(morgan('dev'))
@@ -32,7 +37,7 @@ app.use(express.urlencoded({ extended: false }))
 
 /**** Authenticate Socket - Global middleware for all socket listeners ****/
 
-io.use((socket, next) => authenticateSocket(socket as CustomSocket, next))
+// io.use((socket, next) => authenticateSocket(socket as CustomSocket, next))
 
 /**** Main Socket ****/
 

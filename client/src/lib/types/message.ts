@@ -18,3 +18,9 @@ export interface MappedMessage {
     userTalkedTo: string
     createdAt: string
 }
+
+export interface SocketMessage {
+    userId?: string
+    content: string
+    senderType?: Message['sender_type']
+}

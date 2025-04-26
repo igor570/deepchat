@@ -15,7 +15,7 @@ export const addMessage = async ({
             )
         if (senderType === 'ai')
             await db.query(
-                `INSERT INTO messages (user_id, content, sender_type) VALUES ($1, $2, $3, $4)`,
+                `INSERT INTO messages (user_id, content, sender_type, user_talked_to) VALUES ($1, $2, $3, $4)`,
                 [userId, content, senderType, userTalkedTo]
             )
 
