@@ -84,11 +84,11 @@ npm run dev
 
 🔮 Future Plans
 
-Full conversation history and management
-Voice interaction capabilities
-Multi-language support
-Custom AI training for specialized domains
-Theme customization options
+- Full conversation history and management
+- Voice interaction capabilities
+- Multi-language support
+- Custom AI training for specialized domains
+- Theme customization options
 
 ## 📄 License
 
