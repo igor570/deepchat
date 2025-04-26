@@ -3,15 +3,15 @@ import { ChatConversation, ChatHeader, ChatSendMessage } from '../../components'
 import { useGetMessages } from '../../lib/hooks/getAllMessages'
 import { useAppStore } from '../../lib/store/useAppStore'
 import { socket } from '../../socket'
-import { MappedMessage } from '../../lib/types/message'
+import { SocketMessage } from '../../lib/types/message'
 import './Chat.scss'
 
 export const Chat = () => {
     const userId = useAppStore((s) => s.userId)
     const { data, isLoading, isError } = useGetMessages(userId)
 
-    const [isConnected, setIsConnected] = useState(socket.connected)
-    const [messages, setMessages] = useState<MappedMessage[]>([])
+    const [, setIsConnected] = useState(socket.connected)
+    const [messages, setMessages] = useState<SocketMessage[] | []>([])
 
     useEffect(() => {
         function onConnect() {
@@ -23,10 +23,19 @@ export const Chat = () => {
             console.warn('Socket disconnected')
         }
 
-        function onMessageSend(value: string) {
-            setMessages((previous) => [
-                ...previous,
-                { content: value } as MappedMessage,
+        function onMessageSend(message: string) {
+            if (!userId) {
+                console.error('User ID is missing. Cannot send message.')
+                return
+            }
+
+            // Emit the message to the server
+            socket.emit('chat-message', { userId, content: message })
+
+            // Optimistically update the messages array
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { userId, content: message },
             ])
         }
 
@@ -50,7 +59,7 @@ export const Chat = () => {
             socket.off('foo', onMessageSend)
             socket.off('connect_error', onConnectError)
         }
-    }, [])
+    }, [userId])
 
     if (!userId || isLoading) {
         return <div>Loading...</div> // Show a loading indicator
@@ -68,7 +77,10 @@ export const Chat = () => {
         <div className="chat">
             <div className="chat__page">
                 <ChatHeader />
-                <ChatConversation historicalMessages={data} />
+                <ChatConversation
+                    historicalMessages={data}
+                    messages={messages}
+                />
                 <ChatSendMessage />
             </div>
         </div>

@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { MappedMessage } from '../../lib/types/message'
+import { MappedMessage, SocketMessage } from '../../lib/types/message'
 
 interface ChatConversationProps {
     historicalMessages: MappedMessage[]
-    messages?: MappedMessage[]
+    messages?: SocketMessage[]
 }
 
 export const ChatConversation = ({
