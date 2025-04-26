@@ -11,7 +11,7 @@ export const Chat = () => {
     const { data, isLoading, isError } = useGetMessages(userId)
 
     const [isConnected, setIsConnected] = useState(socket.connected)
-    const [messages, setMessages] = useState<MappedMessage | []>([])
+    const [messages, setMessages] = useState<MappedMessage[]>([])
 
     useEffect(() => {
         function onConnect() {
@@ -23,11 +23,14 @@ export const Chat = () => {
             console.warn('Socket disconnected')
         }
 
-        function onFooEvent(value) {
-            setFooEvents((previous) => [...previous, value])
+        function onMessageSend(value: string) {
+            setMessages((previous) => [
+                ...previous,
+                { content: value } as MappedMessage,
+            ])
         }
 
-        function onConnectError(error) {
+        function onConnectError(error: unknown) {
             console.error('Socket connection error:', error)
         }
 
@@ -37,14 +40,14 @@ export const Chat = () => {
         // Register socket events
         socket.on('connect', onConnect)
         socket.on('disconnect', onDisconnect)
-        socket.on('foo', onFooEvent)
+        socket.on('chat-message', onMessageSend)
         socket.on('connect_error', onConnectError)
 
         // Cleanup socket events on unmount
         return () => {
             socket.off('connect', onConnect)
             socket.off('disconnect', onDisconnect)
-            socket.off('foo', onFooEvent)
+            socket.off('foo', onMessageSend)
             socket.off('connect_error', onConnectError)
         }
     }, [])
