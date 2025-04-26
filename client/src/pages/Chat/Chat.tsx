@@ -18,10 +18,11 @@ export const Chat = () => {
                 console.error('User ID is missing. Cannot send message.')
                 return
             }
-            socket.emit('chat-message', { userId, content: message })
+            socket.emit('chat-message', { userId, message })
+
             setMessages((prevMessages) => [
                 ...prevMessages,
-                { userId, content: message },
+                { userId, content: message, senderType: 'user' },
             ])
         },
         [userId]
