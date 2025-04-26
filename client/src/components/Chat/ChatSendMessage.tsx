@@ -1,4 +1,8 @@
-export const ChatSendMessage = () => {
+interface ChatSendMessageProps {
+    onSubmit: (message: string) => void
+}
+
+export const ChatSendMessage = ({ onSubmit }: ChatSendMessageProps) => {
     return (
         <div className="chat__send-message">
             <input

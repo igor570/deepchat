@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ChatConversation, ChatHeader, ChatSendMessage } from '../../components'
 import { useGetMessages } from '../../lib/hooks/getAllMessages'
 import { useAppStore } from '../../lib/store/useAppStore'
@@ -9,9 +9,27 @@ import './Chat.scss'
 export const Chat = () => {
     const userId = useAppStore((s) => s.userId)
     const { data, isLoading, isError } = useGetMessages(userId)
-
     const [, setIsConnected] = useState(socket.connected)
     const [messages, setMessages] = useState<SocketMessage[] | []>([])
+
+    const handleSendMessage = useCallback(
+        (message: string) => {
+            if (!userId) {
+                console.error('User ID is missing. Cannot send message.')
+                return
+            }
+            socket.emit('chat-message', { userId, content: message })
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { userId, content: message },
+            ])
+        },
+        [userId]
+    )
+
+    useEffect(() => {
+        socket.connect()
+    }, [])
 
     useEffect(() => {
         function onConnect() {
@@ -23,20 +41,9 @@ export const Chat = () => {
             console.warn('Socket disconnected')
         }
 
-        function onMessageSend(message: string) {
-            if (!userId) {
-                console.error('User ID is missing. Cannot send message.')
-                return
-            }
-
-            // Emit the message to the server
-            socket.emit('chat-message', { userId, content: message })
-
-            // Optimistically update the messages array
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { userId, content: message },
-            ])
+        function onReceiveMessage(message: SocketMessage) {
+            // Update the messages array with the new message from the server
+            setMessages((prevMessages) => [...prevMessages, message])
         }
 
         function onConnectError(error: unknown) {
@@ -49,17 +56,18 @@ export const Chat = () => {
         // Register socket events
         socket.on('connect', onConnect)
         socket.on('disconnect', onDisconnect)
-        socket.on('chat-message', onMessageSend)
+        socket.on('reply', onReceiveMessage)
         socket.on('connect_error', onConnectError)
 
         // Cleanup socket events on unmount
         return () => {
             socket.off('connect', onConnect)
             socket.off('disconnect', onDisconnect)
-            socket.off('foo', onMessageSend)
+            socket.off('chat-message', handleSendMessage)
+            socket.off('reply', onReceiveMessage)
             socket.off('connect_error', onConnectError)
         }
-    }, [userId])
+    }, [userId, handleSendMessage])
 
     if (!userId || isLoading) {
         return <div>Loading...</div> // Show a loading indicator
@@ -81,7 +89,7 @@ export const Chat = () => {
                     historicalMessages={data}
                     messages={messages}
                 />
-                <ChatSendMessage />
+                <ChatSendMessage onSubmit={handleSendMessage} />
             </div>
         </div>
     )
