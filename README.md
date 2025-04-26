@@ -78,11 +78,11 @@ npm run dev
 ## 📝 Usage
 
 1. Register a new account or login with existing credentials
-2. Start chatting with ChatBoi AI
+2. Start chatting with DeepChat
 3. Type your message and receive AI-powered responses
-4. Your most recent messages will be available when you return|
+4. Your most recent messages will be available when you return
 
-🔮 Future Plans
+## 🔮 Future Plans
 
 - Full conversation history and management
 - Voice interaction capabilities
