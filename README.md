@@ -1,4 +1,4 @@
-# ChatBoi AI
+# DeepChat
 
 A modern, responsive AI chat application powered by Google Gemini Flash.
 
