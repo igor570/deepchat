@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: false }))
 
 /**** Authenticate Socket - Global middleware for all socket listeners ****/
 
-io.use((socket, next) => authenticateSocket(socket as CustomSocket, next))
+// io.use((socket, next) => authenticateSocket(socket as CustomSocket, next))
 
 /**** Main Socket ****/
 

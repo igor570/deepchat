@@ -2,10 +2,14 @@ import { useEffect, useRef } from 'react'
 import { MappedMessage } from '../../lib/types/message'
 
 interface ChatConversationProps {
-    messages: MappedMessage[]
+    historicalMessages: MappedMessage[]
+    messages?: MappedMessage[]
 }
 
-export const ChatConversation = ({ messages }: ChatConversationProps) => {
+export const ChatConversation = ({
+    historicalMessages,
+    messages,
+}: ChatConversationProps) => {
     const conversationRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -13,11 +17,18 @@ export const ChatConversation = ({ messages }: ChatConversationProps) => {
         if (conversationRef.current) {
             conversationRef.current.scrollTop = 0
         }
-    }, [messages])
+    }, [historicalMessages])
 
     return (
         <div className="chat__conversation">
-            {messages.map((message) =>
+            {historicalMessages.map((message) =>
+                message.senderType === 'user' ? (
+                    <div className="chat__message-user">{message.content}</div>
+                ) : (
+                    <div className="chat__message-ai">{message.content}</div>
+                )
+            )}
+            {messages?.map((message) =>
                 message.senderType === 'user' ? (
                     <div className="chat__message-user">{message.content}</div>
                 ) : (
