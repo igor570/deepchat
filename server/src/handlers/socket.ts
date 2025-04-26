@@ -47,7 +47,8 @@ export const handleChatMessage = (socket: CustomSocket) => {
                 senderType: 'ai',
                 userTalkedTo: userId,
             })
-            socket.emit('reply', geminiResponse)
+
+            socket.emit('reply', { content: geminiResponse, senderType: 'ai' })
 
             //Error catch
         } catch (error: any) {

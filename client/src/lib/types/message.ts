@@ -20,7 +20,7 @@ export interface MappedMessage {
 }
 
 export interface SocketMessage {
-    userId: string
+    userId?: string
     content: string
     senderType?: Message['sender_type']
 }
