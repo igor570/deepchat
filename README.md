@@ -13,7 +13,7 @@ A modern, responsive AI chat application powered by Google Gemini Flash.
 ## 💻 Tech Stack
 
 ### Frontend
-- **React**:
+- **React**
 - **TypeScript**
 - **Zustand**: Lightweight state management
 - **React Query**: Data fetching and caching
