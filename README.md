@@ -32,8 +32,8 @@ A modern, responsive AI chat application powered by Google Gemini Flash.
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/chatboi-ai.git
-cd chatboi-ai
+git clone https://github.com/igor570/deepchat.git
+cd deepchat
 ```
 
 2. Install dependencies
