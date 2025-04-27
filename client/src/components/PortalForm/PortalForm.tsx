@@ -6,6 +6,7 @@ import { Mode } from '../../lib/types/mode.ts'
 import { useSignIn, useSignUp } from '../../lib/hooks/auth.ts'
 import { omit } from 'lodash-es'
 import { useNavigate } from 'react-router-dom'
+import { useAppStore } from '../../lib/store/useAppStore.ts'
 
 import {
     FormModeToggle,
@@ -15,7 +16,6 @@ import {
 } from './FormComponents'
 
 import './PortalForm.scss'
-import { useAppStore } from '../../lib/store/useAppStore.ts'
 
 export const PortalForm = () => {
     const setUserId = useAppStore((s) => s.setUserId)
