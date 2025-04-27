@@ -4,18 +4,22 @@ import { socket } from '../../socket'
 
 interface AppStore {
     userId: string
-    setUserId: (userId: string) => void
     isConnected: boolean
-    setIsConnected: (isConnected: boolean) => void
     messages: SocketMessage[] | []
+    awaitingReply: boolean
+    setUserId: (userId: string) => void
+    setIsConnected: (isConnected: boolean) => void
     setMessages: (messages: SocketMessage[]) => void
+    setAwaitingReply: (awaitingReply: boolean) => void
 }
 
 export const useAppStore = create<AppStore>((set) => ({
     userId: '',
-    setUserId: (userId: string) => set({ userId }),
     isConnected: socket.connected,
-    setIsConnected: (isConnected: boolean) => set({ isConnected }),
     messages: [],
+    awaitingReply: false,
+    setUserId: (userId: string) => set({ userId }),
+    setIsConnected: (isConnected: boolean) => set({ isConnected }),
     setMessages: (messages: SocketMessage[]) => set({ messages }),
+    setAwaitingReply: (awaitingReply: boolean) => set({ awaitingReply }),
 }))

@@ -9,14 +9,16 @@ import { useShallow } from 'zustand/shallow'
 import './Chat.scss'
 
 export const Chat = () => {
-    const [userId, messages, setMessages, setIsConnected] = useAppStore(
-        useShallow((s) => [
-            s.userId,
-            s.messages,
-            s.setMessages,
-            s.setIsConnected,
-        ])
-    )
+    const [userId, messages, setMessages, setIsConnected, setAwaitingReply] =
+        useAppStore(
+            useShallow((s) => [
+                s.userId,
+                s.messages,
+                s.setMessages,
+                s.setIsConnected,
+                s.setAwaitingReply,
+            ])
+        )
     const { data, isLoading, isError } = useGetMessages(userId)
 
     const handleSendMessage = useCallback(
@@ -31,8 +33,10 @@ export const Chat = () => {
                 ...messages,
                 { content: message, userId, senderType: 'user' },
             ])
+
+            setAwaitingReply(true)
         },
-        [userId, messages, setMessages]
+        [userId, setMessages, messages, setAwaitingReply]
     )
 
     useEffect(() => {
@@ -50,11 +54,12 @@ export const Chat = () => {
         }
 
         function onReceiveMessage(message: SocketMessage) {
-            // Update the messages array with the new message from the server
             setMessages([
                 ...messages,
                 { content: message.content, senderType: 'ai' },
             ])
+
+            setAwaitingReply(false)
         }
 
         function onConnectError(error: unknown) {
@@ -75,7 +80,14 @@ export const Chat = () => {
             socket.off('reply', onReceiveMessage)
             socket.off('connect_error', onConnectError)
         }
-    }, [userId, handleSendMessage, setIsConnected, setMessages, messages])
+    }, [
+        userId,
+        handleSendMessage,
+        setIsConnected,
+        setMessages,
+        messages,
+        setAwaitingReply,
+    ])
 
     if (!userId || isLoading) {
         return <div>Loading...</div> // Show a loading indicator

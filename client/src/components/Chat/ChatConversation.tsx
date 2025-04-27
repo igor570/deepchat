@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { MappedMessage, SocketMessage } from '../../lib/types/message'
+import { ChatMessage } from './ChatMessage'
+import { ChatHistoricalMessage } from './ChatHistoricalMessage'
 
 interface ChatConversationProps {
     historicalMessages?: MappedMessage[]
@@ -20,20 +22,10 @@ export const ChatConversation = ({
 
     return (
         <div className="chat__conversation">
-            {historicalMessages?.map((message) =>
-                message.senderType === 'user' ? (
-                    <div className="chat__message-user">{message.content}</div>
-                ) : (
-                    <div className="chat__message-ai">{message.content}</div>
-                )
-            )}
-            {messages?.map((message) =>
-                message.senderType === 'user' ? (
-                    <div className="chat__message-user">{message.content}</div>
-                ) : (
-                    <div className="chat__message-ai">{message.content}</div>
-                )
-            )}
+            <ChatHistoricalMessage
+                historicalMessages={historicalMessages || []}
+            />
+            <ChatMessage messages={messages || []} />
         </div>
     )
 }
