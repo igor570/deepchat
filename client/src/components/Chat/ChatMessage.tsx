@@ -1,8 +1,10 @@
+import { useShallow } from 'zustand/shallow'
 import { useAppStore } from '../../lib/store/useAppStore'
-import { SocketMessage } from '../../lib/types/message'
 
-export const ChatMessage = ({ messages }: { messages: SocketMessage[] }) => {
-    const awaitingReply = useAppStore((s) => s.awaitingReply)
+export const ChatMessage = () => {
+    const [awaitingReply, messages] = useAppStore(
+        useShallow((s) => [s.awaitingReply, s.messages])
+    )
 
     return (
         <>

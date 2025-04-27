@@ -101,10 +101,7 @@ export const Chat = () => {
         <div className="chat">
             <div className="chat__page">
                 <ChatHeader />
-                <ChatConversation
-                    historicalMessages={data}
-                    messages={messages}
-                />
+                <ChatConversation historicalMessages={data} />
                 <ChatSendMessage onSubmit={handleSendMessage} />
             </div>
         </div>
