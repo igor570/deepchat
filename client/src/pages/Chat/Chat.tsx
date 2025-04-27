@@ -1,16 +1,23 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { ChatConversation, ChatHeader, ChatSendMessage } from '../../components'
 import { useGetMessages } from '../../lib/hooks/getAllMessages'
 import { useAppStore } from '../../lib/store/useAppStore'
 import { socket } from '../../socket'
 import { SocketMessage } from '../../lib/types/message'
+import { useShallow } from 'zustand/shallow'
+
 import './Chat.scss'
 
 export const Chat = () => {
-    const userId = useAppStore((s) => s.userId)
+    const [userId, messages, setMessages, setIsConnected] = useAppStore(
+        useShallow((s) => [
+            s.userId,
+            s.messages,
+            s.setMessages,
+            s.setIsConnected,
+        ])
+    )
     const { data, isLoading, isError } = useGetMessages(userId)
-    const [, setIsConnected] = useState(socket.connected)
-    const [messages, setMessages] = useState<SocketMessage[] | []>([])
 
     const handleSendMessage = useCallback(
         (message: string) => {
@@ -20,12 +27,12 @@ export const Chat = () => {
             }
             socket.emit('chat-message', { userId, message })
 
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { userId, content: message, senderType: 'user' },
+            setMessages([
+                ...messages,
+                { content: message, userId, senderType: 'user' },
             ])
         },
-        [userId]
+        [userId, messages, setMessages]
     )
 
     useEffect(() => {
@@ -44,15 +51,15 @@ export const Chat = () => {
 
         function onReceiveMessage(message: SocketMessage) {
             // Update the messages array with the new message from the server
-            setMessages((prevMessages) => [...prevMessages, message])
+            setMessages([
+                ...messages,
+                { content: message.content, senderType: 'ai' },
+            ])
         }
 
         function onConnectError(error: unknown) {
             console.error('Socket connection error:', error)
         }
-
-        // Set initial connection state
-        setIsConnected(socket.connected)
 
         // Register socket events
         socket.on('connect', onConnect)
@@ -68,7 +75,7 @@ export const Chat = () => {
             socket.off('reply', onReceiveMessage)
             socket.off('connect_error', onConnectError)
         }
-    }, [userId, handleSendMessage])
+    }, [userId, handleSendMessage, setIsConnected, setMessages, messages])
 
     if (!userId || isLoading) {
         return <div>Loading...</div> // Show a loading indicator
@@ -76,10 +83,6 @@ export const Chat = () => {
 
     if (isError) {
         throw new Error(`Error getting messages from user: ${userId}`)
-    }
-
-    if (!data || data.length === 0) {
-        throw new Error(`No messages were found.`)
     }
 
     return (

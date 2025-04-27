@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { MappedMessage, SocketMessage } from '../../lib/types/message'
 
 interface ChatConversationProps {
-    historicalMessages: MappedMessage[]
+    historicalMessages?: MappedMessage[]
     messages?: SocketMessage[]
 }
 
@@ -13,15 +13,14 @@ export const ChatConversation = ({
     const conversationRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        // Auto-scroll to the bottom (which is actually the top in column-reverse)
         if (conversationRef.current) {
             conversationRef.current.scrollTop = 0
         }
-    }, [historicalMessages])
+    }, [historicalMessages, messages])
 
     return (
         <div className="chat__conversation">
-            {historicalMessages.map((message) =>
+            {historicalMessages?.map((message) =>
                 message.senderType === 'user' ? (
                     <div className="chat__message-user">{message.content}</div>
                 ) : (

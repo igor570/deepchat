@@ -18,6 +18,7 @@ export const ChatSendMessage = ({ onSubmit }: ChatSendMessageProps) => {
                 type="text"
                 placeholder="send a message..."
                 className="chat__send-message__input"
+                value={value}
                 onChange={(e) => setValue(e.target.value)}
             ></input>
             <button type="submit" onClick={() => handleSubmit(value)}>
