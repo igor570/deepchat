@@ -8,7 +8,6 @@ A modern, responsive AI chat application powered by Google Gemini Flash.
 - **Recent Messages**: Access to your most recent conversations
 - **Responsive Design**: Works seamlessly across desktop and mobile
 - **User Authentication**: Secure login and session management
-- **Customizable AI Responses**: Adjust the AI's tone and response style
 
 ## 💻 Tech Stack
 
@@ -62,6 +61,8 @@ DATABASE_URL
 URL
 ```
 
+4. Setup Postgres Table
+
 5. Start the development servers
 ```bash
 # Start backend server
@@ -73,7 +74,7 @@ cd client
 npm run dev
 ```
 
-6. Visit `http://localhost:3000` in your browser
+6. Visit `http://localhost:5173` in your browser
 
 ## 📝 Usage
 
@@ -89,12 +90,3 @@ npm run dev
 - Multi-language support
 - Custom AI training for specialized domains
 - Theme customization options
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👏 Acknowledgements
-
-- [Google Gemini API](https://ai.google.dev/) for AI capabilities
-- [Neon DB](https://neon.tech/) for PostgreSQL hosting
